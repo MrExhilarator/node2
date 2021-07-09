@@ -1,4 +1,4 @@
-const Joi = require("@hapi/joi");
+const Joi = require('@hapi/joi');
 
 const authSchema = Joi.object({
     login: Joi.string().min(2).max(40).required(),
@@ -13,6 +13,6 @@ const updateSchema = Joi.object({
 });
 
 module.exports = {
-    authSchema: authSchema,
-    updateSchema: updateSchema
-}
+    authSchema,
+    updateSchema
+};

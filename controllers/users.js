@@ -1,16 +1,16 @@
 const { v4: uuidv4 } = require('uuid');
 
-const { authSchema, updateSchema } = require("../helpers/validationSchema");
+const { authSchema, updateSchema } = require('../helpers/validationSchema');
 
 let users = [
     {
-        "id": "1",
-        "login": "xxx",
-        "password": "xxx",
-        "age": 10,
-        "isDeleted": false
+        'id': '1',
+        'login': 'xxx',
+        'password': 'xxx',
+        'age': 10,
+        'isDeleted': false
     }
-]
+];
 
 const getUsers = (request, response) => {
     users = users.filter((user) => user.isDeleted === false);
@@ -24,8 +24,7 @@ const createUser = async (request, response) => {
         users.push({ id: uuidv4(), ...result, isDeleted: false });
 
         response.send(`user with login name ${result.login} added!`);
-    }
-    catch (error) {
+    } catch (error) {
         response.status(400);
         response.send(`Bad Request error: ${error.message}`);
     }
@@ -35,7 +34,7 @@ const getUserById = (request, response) => {
     const { id } = request.params;
 
     users = users.filter((user) => user.isDeleted === false);
-    const foundUser = users.find((user) => user.id == id);
+    const foundUser = users.find((user) => user.id === id);
     if (foundUser) {
         response.send(foundUser);
     } else {
@@ -47,7 +46,7 @@ const deleteUser = (request, response) => {
     const { id } = request.params;
 
     users = users.filter((user) => user.isDeleted === false);
-    const userToBeDeleted = users.find((user) => user.id == id);
+    const userToBeDeleted = users.find((user) => user.id === id);
     if (userToBeDeleted) {
         userToBeDeleted.isDeleted = true;
         response.send(`User with Id : ${id} is deleted`);
@@ -59,7 +58,7 @@ const deleteUser = (request, response) => {
 const updateUser = async (request, response) => {
     const { id } = request.params;
 
-    const user = users.find((user) => user.id == id);
+    const user = users.find((user) => user.id === id);
     if (user) {
         try {
             const result = await updateSchema.validateAsync(request.body);
@@ -77,8 +76,7 @@ const updateUser = async (request, response) => {
             response.status(400);
             response.send(`Bad Request error:${error.status} - ${error.message}`);
         }
-    }
-    else {
+    } else {
         response.send(`Id : ${id} not found`);
     }
 };
@@ -88,18 +86,18 @@ const getAutoSuggestUsers = (request, response) => {
 
     const suggestedUsers = users.filter((user) => user.login.includes(loginSubString)).slice(0, limit);
 
-    if (suggestedUsers.length == 0) {
-        response.send(`Can't find users with applied filters`);
+    if (suggestedUsers.length === 0) {
+        response.send('Cannot find users with applied filters');
     } else {
         response.send(suggestedUsers);
     }
 };
 
 module.exports = {
-    getUsers: getUsers,
-    createUser: createUser,
-    getUserById: getUserById,
-    deleteUser: deleteUser,
-    updateUser: updateUser,
-    getAutoSuggestUsers: getAutoSuggestUsers,
+    getUsers,
+    createUser,
+    getUserById,
+    deleteUser,
+    updateUser,
+    getAutoSuggestUsers
 };
